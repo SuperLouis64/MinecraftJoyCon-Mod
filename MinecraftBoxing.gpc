@@ -1,0 +1,86 @@
+#pragma METAINFO("MinecraftBoxing", 1, 0, "SuperLouis64")
+
+/*simple idea
+
+	punch to punch stuff in-game! Needs joycons to work!
+*/
+
+fix32 boxingValue;
+
+
+main 
+{
+
+	fixDrift();
+
+
+	// punch functions
+	RightPunch();
+	LeftPunch();
+	
+	
+	if(boxingValue > 30.0)
+		{
+			set_val(BUTTON_5, 100.0);
+		}
+		
+	if(get_val(ACCEL_1_X) < 60.0 || get_val(ACCEL_2_X) > -60.0)
+		{
+			boxingValue = boxingValue - 0.5;
+		}
+		
+	if(boxingValue < 0.0)
+		{
+			boxingValue = 0.0;
+		}
+}
+
+
+void LeftPunch()
+{
+	if(get_val(ACCEL_1_X) > 60.0 && get_val(BUTTON_7) < 1.0) // this should make right punch do the L1
+		{
+			boxingValue = 300.0;
+		}
+}
+
+
+// right hand punch times
+void RightPunch()
+{
+	if(get_val(ACCEL_2_X) < -60.0 && get_val(BUTTON_4) < 1.0) // this should make right punch do the R1
+		{
+			boxingValue = 300.0;
+		}
+	
+}
+
+// this fixes my slight drifting thanks Nintendo
+void fixDrift()
+{
+	if(get_val(STICK_1_X) > -20.0 && get_val(STICK_1_X) < 20.0)
+		{
+			set_val(STICK_1_X, 0.0);
+		}
+	
+	if(get_val(STICK_1_Y) > -20.0 && get_val(STICK_1_Y) < 20.0)
+		{
+			set_val(STICK_1_Y, 0.0);
+		}
+		
+	if(get_val(STICK_2_X) > -20.0 && get_val(STICK_2_X) < 20.0)
+		{
+			set_val(STICK_2_X, 0.0);
+		}
+		
+	if(get_val(STICK_2_Y) > -20.0 && get_val(STICK_2_Y) < 20.0)
+		{
+			set_val(STICK_2_Y, 0.0);
+		}
+}
+
+combo punchTree
+{
+	set_val(BUTTON_5, 100);
+	wait(500);
+}
